@@ -3,10 +3,12 @@
 # Created by: Kevin Luu <luuk> and Jenna Wiens <jwiens>
 # Modified by: Sarina Canelake <sarina>
 
-# Modified by: (me) Jeff Hartl
+# Modified further by: (me) Jeff Hartl
 
 ###############################################################
-'''THE ORDER IN WHICH WE`RE PRESENTED WITH THE FUNCTIONS:
+
+'''
+THE ORDER IN WHICH WE WERE PRESENTED WITH THE FUNCTIONS:
     getWordScore
     dealHand
     updateHand
@@ -14,11 +16,6 @@
     calculateHandlen
     playHand
     playGame
-    ----[this is as far as I got in prob set 4 when taking the course]
-    compChooseWord
-    compPlayHand
-    playGame [with option for computer to play too]
-'''
 
 # getWordScore(word, n): Returns score, a nonnegative int, for a word of n letters
 # displayHand(hand): Displays a string of letters currently in the hand.
@@ -27,15 +24,6 @@
 # isValidWord(word, hand, wordList): Returns True if word is in wordList & its
 #                                    letters are all in hand; otherwise False.
 # calculateHandlen(hand): Returns the number of letters <int> in the current hand.
-
-###############################################################
-
-'''
-MY TEST VALUES:
-hand = {'a':1, 'x':1, 'l':3, 'e':1, 's': 2, 'n': 1}
-word = "sale"
-wordList = ['shovel', 'ate', 'over', 'rich', 'hide', 'rule', \
-            'bun', 'lover', 'ought', 'nor', 'sad', 'sale']
 '''
 
 ###############################################################
@@ -44,7 +32,6 @@ wordList = ['shovel', 'ate', 'over', 'rich', 'hide', 'rule', \
 
 import random
 import string
-
 
 VOWELS = 'aeiou'
 CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
@@ -161,7 +148,7 @@ def dealHand(n):
 #-----------------------------------------------------------------------
 
 # Update a hand
-# It MUST NOT MUTATE the hand passed in; instead, return a COPY of hand. 
+# Don't mutate the hand passed in. Instead, return a new, changed copy of it.
 #
 # (All that this function does is decrement values of keys in a dict;
 # displayHand() will show the player the letters that still have >= 1)
@@ -216,7 +203,7 @@ def isValidWord(word, hand, wordList):
     return inHand and inList
 
 
-########################################################################
+#-----------------------------------------------------------------------
 
 # Playing a Hand
 # pseudocode provided by MITx course grader.
@@ -224,7 +211,6 @@ def isValidWord(word, hand, wordList):
 def playHand(hand, wordList, n):
     """
     Allows the user to play their given hand, as follows:
-
     1* The hand is displayed.
     2* The user may input a word or a single period (the string ".") 
        to indicate they're done playing.
@@ -242,7 +228,6 @@ def playHand(hand, wordList, n):
     wordList: list of lowercase strings
     n: integer (HAND_SIZE; i.e., hand size required for additional points)
     """
-    
     # Keep track of score
     score = 0
     
@@ -276,73 +261,53 @@ def playHand(hand, wordList, n):
                     word, getWordScore(word, n), score))
                 # Update the hand
                 hand = updateHand(hand, word)
-            
-
-########################################################################
-
-## TO DO
-
-"""
-PLAYING A GAME  (10 points possible)
-A game consists of playing multiple hands. We need to implement one final 
-function to complete our word-game program. Write the code that implements the 
-`playGame` function.
-
-You should remove the code that is currently uncommented in the `playGame` 
-body. Read through the specification and make sure you understand what this 
-function accomplishes.
-
-Use the `HAND_SIZE` constant to determine the number of cards in a hand.
-
-Testing: Try out this implementation as if you were playing the game. Try 
-out different values for HAND_SIZE with your program, and be sure that you 
-can play the wordgame with different hand sizes by modifying only HAND_SIZE.
-
-SEE ALSO: "A Cool Trick about `print`", below.
-
-----------------------------------------------
-
-SAMPLE OUTPUT
-Here is how the game output should look: ( see my file 
-"PS4-playGame - EXPECTED OUTPUT.txt" )
-
-HINT ABOUT THE OUTPUT
-Be sure to inspect the sample output carefully - very little is actually 
-printed out in this function specifically. Most of the printed output actually 
-comes from the code you wrote in `playHand` - be sure that your code is modular
-and uses function calls to the `playHand` helper function.
-You should also make calls to the `dealHand` helper function. You shouldn't 
-make calls to any other helper function that we've written so far - in fact, 
-this function can be written in about 15-20 lines of code.
 
 
-# The only lines printed directly from this function are:
-#   "Enter n to deal a new hand, r to replay the last hand, or e to end game: "
-#   "You have not played a hand yet. Please play a new hand first!"
-#   "Invalid command."
-
-"""
-
+#-----------------------------------------------------------------------
+                
+# Playing a Game
 
 def playGame(wordList):
-    '''
-    This function allows the user to play an arbitrary number of hands.
-    1) Asks the user to input 'n' or 'r' or 'e'.
-          * If the user inputs 'n', let the user play a new (random) hand.
-          * If the user inputs 'r', let the user play the last hand again.
-          * If the user inputs 'e', exit the game.
-          * If the user inputs anything else, tell them their input was invalid.
-    2) When done playing the hand, repeat from step 1
-    '''
-    pass
+    """
+    Allow the user to play an arbitrary number of hands.
+    1) Ask the user to input 'n' or 'r' or 'e'.
+      * If the user inputs 'n', let the user play a new (random) hand.
+      * If the user inputs 'r', let the user play the last hand again.
+      * If the user inputs 'e', exit the game.
+      * If the user inputs anything else, tell them their input was invalid.
+    2) When done playing the hand, repeat from step 1    
+    """
+    games_played = 0
+
+    while True:
+        print('')
+        
+        game_cmd = input('''Enter "n" to deal a new hand,
+      "r" to replay the last hand, or
+      "e" to end game: ''')
+    
+        if game_cmd == 'n':
+            games_played += 1
+            hand = dealHand(HAND_SIZE)
+            playHand(hand, wordList, HAND_SIZE)
+    
+        elif game_cmd == 'r':
+            if games_played == 0:  # at least 1 new game must've run
+                print("You haven't played a hand yet. Play a new hand first!\n")
+            else:
+                # provide existing hand to a new playHand
+                playHand(hand, wordList, HAND_SIZE)
+    
+        elif game_cmd == 'e':
+            print("End of game. Thanks for playing! \n")
+            break
+    
+        else:
+            print("Invalid command. Try again. \n")
 
 
-
-# Build data structures used for entire session and play game
-
+# Build data structures for session and initiate a game
 if __name__ == '__main__':
     wordList = loadWords()
-    hand = dealHand(HAND_SIZE)
-    playHand(hand, wordList, HAND_SIZE)
-    # TO DO: implement the playGame function; discard the previous two lines.
-    #playGame(wordList)
+    playGame(wordList)
+  
