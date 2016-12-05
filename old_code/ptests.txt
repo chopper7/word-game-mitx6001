@@ -1,0 +1,24 @@
+'''
+hand = {'a':1, 'x':1, 'l':3, 'e':1, 's': 2, 'n': 1}
+
+word = "sale"
+
+
+Test 4
+Function call: 
+isValidWord(rapture, {'a': 3, 'e': 1, 'p': 2, 'r': 1, 'u': 1, 't': 1}, wordList)
+
+
+test 2
+hand = {'d': 2, 'a': 3, 'p': 2, 'e': 1, 'k': 2, 'i':1, 'o': 1}
+
+word = "daikon"
+'''
+
+wordList = ['shovel', 'ate', 'over', 'rich', 'hide', 'rule', 'ban', 'lull', 
+'it', 'was', 'scored', 'waybill', 'outgoing', 'rapture', 'fork', 'nor', 'sale']
+
+
+wordList = loadWords()
+playHand({'a':1, 'x':1, 'l':3, 'e':1, 's': 2, 'n': 1}
+, wordList, 6)
